@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors());
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "https://pass-on.vercel.app/");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
@@ -33,8 +33,7 @@ app.get("/", (req, res) => {
 
 io = socket(server, {
   cors: {
-    origin: "https://pass-on.vercel.app/",
-    credentials: true,
+    origin: "https://pass-on.vercel.app/"
   },
 });
 
