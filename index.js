@@ -69,7 +69,6 @@ io.on("connection", (socket) => {
       currentPlayersArray.push(player[1].username);
     });
     if (currentPlayersArray.length >= 4) {
-      console.log("Room is full");
       socket.emit("exception", {
         errorMessage: "The room you are trying to join is full...",
       });
@@ -179,7 +178,15 @@ io.on("connection", (socket) => {
     });
     finalDeck.map((set) => {
       if (checkIfAllEqual(set.cards)) {
-        io.to(socket.id).emit("activate-win-btn", true);
+        const socketID = Array.from(playerRooms).filter(
+          (player) => player[1].username === set.player
+        )[0][0];
+        io.to(socketID).emit("activate-win-btn", true);
+      } else {
+        const socketID = Array.from(playerRooms).filter(
+          (player) => player[1].username === set.player
+        )[0][0];
+        io.to(socketID).emit("activate-win-btn", false);
       }
     });
     io.to(data.roomID).emit("game-manager", {
@@ -213,7 +220,14 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(data.roomID)
       .emit("winners", { winners: Array.from(winners) });
-    roomsDetails.delete(data.roomID);
+
+    if (playerRooms.get(socket.id)) {
+      playerRooms.delete(socket.id);
+    }
+    if (winners.size === 4) {
+      roomsDetails.delete(data.roomID)
+      winners.clear()
+    }
   });
   socket.on("disconnect", () => {
     if (playerRooms.get(socket.id)) {
