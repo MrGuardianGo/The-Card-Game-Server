@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 io = socket(server, {
   cors: {
-    origin: "*"
+    origin: "*",
   },
 });
 
@@ -205,6 +205,8 @@ io.on("connection", (socket) => {
       (checkIfAllEqual(data.cards) &&
         roomsDetails.get(data.roomID).winners.length === 0) ||
       (!checkIfAllEqual(data.cards) &&
+        roomsDetails.get(data.roomID).winners.length !== 0) ||
+      (checkIfAllEqual(data.cards) &&
         roomsDetails.get(data.roomID).winners.length !== 0)
     ) {
       if (roomsDetails.get(data.roomID).winners.indexOf(data.username) === -1) {
@@ -224,8 +226,8 @@ io.on("connection", (socket) => {
       playerRooms.delete(socket.id);
     }
     if (winners.size === 4) {
-      roomsDetails.delete(data.roomID)
-      winners.clear()
+      roomsDetails.delete(data.roomID);
+      winners.clear();
     }
   });
   socket.on("disconnect", () => {
