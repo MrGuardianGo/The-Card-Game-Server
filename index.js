@@ -5,12 +5,12 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({origin: ['http://localhost:3000', 'http://127.0.0.1:3000']}));
 
 let PORT = process.env.PORT || 8000;
 
 const server = app.listen(PORT, () => {
-  console.log("Server running on", PORT);
+  console.log("Changes made on", PORT);
 });
 
 app.get('/', (req, res) => {
