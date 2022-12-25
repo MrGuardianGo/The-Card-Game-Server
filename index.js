@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 io = socket(server, {
   cors: {
-    origin: "https://pass-on.vercel.app/"
+    origin: "*"
   },
 });
 
